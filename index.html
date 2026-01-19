@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festivite - Crie Convites Digitais</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600&family=Cormorant+Garamond:wght@400;600&family=Pacifico&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* Header */
+        .header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #f59e0b, #ea580c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .preview-btn {
+            padding: 0.5rem 1rem;
+            background: #334155;
+            color: #cbd5e1;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .preview-btn:hover {
+            background: #475569;
+        }
+
+        /* Main */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .grid-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Form Container */
+        .form-container {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .step-dot.active {
+            background: linear-gradient(90deg, #f59e0b, #ea580c);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .step-dot.completed {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-dot.inactive {
+            background: #334155;
+            color: #94a3b8;
+        }
+
+        .step-line {
+            width: 2rem;
+            height: 4px;
+            border-radius: 2px;
+            background: #334155;
+        }
+
+        .step-line.completed {
+            background: #10b981;
+        }
+
+        /* Form Sections */
+        .form-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.25rem;
+            color: white;
+        }
+
+        .form-header p {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 1.5rem;
+            background: linear-gradient(180deg, #fbbf24, #ea580c);
+            border-radius: 2px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label .required {
+            color: #f59e0b;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid #475569;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: #64748b;
+        }
+
+        .form-textarea {
+            resize: none;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Theme Selection */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        @media (min-width: 640px) {
+            .theme-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .theme-card {
+            padding: 1rem;
+            border-radius: 12px;
+            border: 2px solid #475569;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .theme-card:hover {
+            border-color: #64748b;
+        }
+
+        .theme-card.selected {
+            border-color: #f59e0b;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+        }
+
+        .theme-emoji {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Color Pickers */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .color-picker {
+            width: 100%;
+            height: 48px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid #475569;
+        }
+
+        /* Font Selection */
+        .font-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .font-card {
+            padding: 1rem;
+            border-radius: 12px;
+            border: 2px solid #475569;
+            background: rgba(30, 41, 59, 0.5);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .font-card:hover {
+            border-color: #64748b;
+        }
+
+        .font-card.selected {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .font-card-title {
+            font-size: 1rem;
+            color: white;
+        }
+
+        .font-card-preview {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-top: 0.25rem;
+        }
+
+        /* Image Upload */
+        .image-upload {
+            border: 2px dashed #475569;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .image-upload:hover {
+            border-color: #f59e0b;
+        }
+
+        .image-upload-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 0.75rem;
+            color: #64748b;
+        }
+
+        .image-upload-text {
+            color: #94a3b8;
+        }
+
+        .image-upload-hint {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .image-preview-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .image-preview {
+            max-height: 200px;
+            border-radius: 8px;
+        }
+
+        .image-remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 32px;
+            height: 32px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Terms */
+        .terms-box {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 12px;
+            padding: 1rem;
+            max-height: 160px;
+            overflow-y: auto;
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+
+        .terms-box strong {
+            color: #cbd5e1;
+        }
+
+        .terms-box ul {
+            margin-top: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .terms-box li {
+            margin-bottom: 0.25rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .checkbox-custom {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #64748b;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checkbox-label:hover .checkbox-custom {
+            border-color: #f59e0b;
+        }
+
+        .checkbox-label input:checked + .checkbox-custom {
+            background: #f59e0b;
+            border-color: #f59e0b;
+        }
+
+        .checkbox-label input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .checkbox-text {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-text a {
+            color: #fbbf24;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary {
+            background: #334155;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #f59e0b, #ea580c);
+            color: white;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #d97706, #dc2626);
+        }
+
+        .btn-primary:disabled {
+            background: #475569;
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(90deg, #10b981, #14b8a6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(90deg, #059669, #0d9488);
+        }
+
+        /* Preview Container */
+        .preview-container {
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .preview-container {
+                display: block;
+            }
+        }
+
+        .preview-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .preview-sticky {
+            position: sticky;
+            top: 2rem;
+        }
+
+        /* Invite Preview */
+        .invite-preview {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            min-height: 600px;
+            position: relative;
+        }
+
+        .invite-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.1;
+        }
+
+        .invite-content {
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 600px;
+        }
+
+        .invite-header-decoration {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .invite-line {
+            width: 48px;
+            height: 1px;
+        }
+
+        .invite-emoji {
+            font-size: 1.75rem;
+        }
+
+        .invite-image {
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border-width: 4px;
+            border-style: solid;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .invite-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .invite-title {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .invite-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .invite-divider {
+            width: 96px;
+            height: 4px;
+            border-radius: 2px;
+            margin-bottom: 1.5rem;
+        }
+
+        .invite-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .invite-info svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .invite-location {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .invite-location svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .invite-location-name {
+            font-weight: 600;
+        }
+
+        .invite-location-address {
+            font-size: 0.875rem;
+            opacity: 0.75;
+        }
+
+        .invite-description {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .invite-message {
+            font-style: italic;
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .invite-contact {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+        }
+
+        .invite-contact-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .invite-contact-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .invite-contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .invite-footer {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.5;
+        }
+
+        .invite-footer-line {
+            width: 32px;
+            height: 1px;
+        }
+
+        .invite-footer-text {
+            font-size: 0.75rem;
+        }
+
+        /* Final Step */
+        .final-step-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-step-header h2 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .final-step-header p {
+            color: #94a3b8;
+        }
+
+        .final-buttons {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* Step Content */
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 1.5rem 1rem;
+            border-top: 1px solid rgba(71, 85, 105, 0.5);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        /* Mobile Preview Mode */
+        .mobile-preview-mode .form-container,
+        .mobile-preview-mode .preview-container {
+            display: none;
+        }
+
+        .mobile-preview-mode .mobile-preview {
+            display: block;
+        }
+
+        .mobile-preview {
+            display: none;
+            text-align: center;
+        }
+
+        .mobile-preview h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-to-edit-btn {
+            margin-top: 2rem;
+        }
+
+        /* Hidden file input */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">F</div>
+                <span class="logo-text">Festivite</span>
+            </div>
+            <button class="preview-btn" onclick="togglePreview()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+                <span id="previewBtnText">Prévia</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main" id="mainContent">
+        <div class="grid-container">
+            <!-- Form Side -->
+            <div class="form-container">
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <button class="step-dot active" id="stepDot1" onclick="goToStep(1)">1</button>
+                    <div class="step-line" id="stepLine1"></div>
+                    <button class="step-dot inactive" id="stepDot2" onclick="goToStep(2)">2</button>
+                    <div class="step-line" id="stepLine2"></div>
+                    <button class="step-dot inactive" id="stepDot3" onclick="goToStep(3)">3</button>
+                    <div class="step-line" id="stepLine3"></div>
+                    <button class="step-dot inactive" id="stepDot4" onclick="goToStep(4)">4</button>
+                    <div class="step-line" id="stepLine4"></div>
+                    <button class="step-dot inactive" id="stepDot5" onclick="goToStep(5)">5</button>
+                </div>
+
+                <!-- Form Header -->
+                <div class="form-header">
+                    <h2 id="stepTitle">Detalhes do Evento</h2>
+                    <p id="stepDescription">Preencha as informações básicas do seu evento</p>
+                </div>
+
+                <!-- Step 1: Event Details -->
+                <div class="step-content active" id="step1">
+                    <div class="form-section">
+                        <h3 class="section-title">Informações Básicas</h3>
+                        <div class="form-group">
+                            <label class="form-label">Título do Evento <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="titulo" placeholder="Ex: Casamento de Ana & Pedro" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subtítulo</label>
+                            <input type="text" class="form-input" id="subtitulo" placeholder="Ex: Celebrando nosso amor" oninput="updatePreview()">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Data <span class="required">*</span></label>
+                                <input type="date" class="form-input" id="data" oninput="updatePreview()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Horário</label>
+                                <input type="time" class="form-input" id="hora" oninput="updatePreview()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Localização</h3>
+                        <div class="form-group">
+                            <label class="form-label">Nome do Local <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="local" placeholder="Ex: Espaço Garden" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Endereço Completo</label>
+                            <input type="text" class="form-input" id="endereco" placeholder="Ex: Rua das Flores, 123 - Centro" oninput="updatePreview()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descrição do Evento</label>
+                        <textarea class="form-textarea" id="descricao" placeholder="Conte mais sobre o seu evento..." oninput="updatePreview()"></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 2: Appearance -->
+                <div class="step-content" id="step2">
+                    <div class="form-section">
+                        <h3 class="section-title">Escolha o Tema</h3>
+                        <div class="theme-grid" id="themeGrid">
+                            <!-- Themes will be inserted here -->
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Personalize as Cores</h3>
+                        <div class="color-grid">
+                            <div class="form-group">
+                                <label class="form-label">Cor Principal</label>
+                                <input type="color" class="color-picker" id="corPrincipal" value="#F8E8E0" oninput="updatePreview()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Cor Secundária</label>
+                                <input type="color" class="color-picker" id="corSecundaria" value="#D4A574" oninput="updatePreview()">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Cor do Texto</label>
+                                <input type="color" class="color-picker" id="corTexto" value="#2C1810" oninput="updatePreview()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Escolha a Fonte</h3>
+                        <div class="font-list" id="fontList">
+                            <!-- Fonts will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Media -->
+                <div class="step-content" id="step3">
+                    <div class="form-section">
+                        <h3 class="section-title">Imagem do Convite</h3>
+                        <div class="image-upload" id="imageUpload" onclick="document.getElementById('imageInput').click()">
+                            <svg class="image-upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <p class="image-upload-text">Clique para adicionar uma imagem</p>
+                            <p class="image-upload-hint">PNG, JPG ou GIF</p>
+                        </div>
+                        <input type="file" id="imageInput" class="hidden" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Mensagem Personalizada</h3>
+                        <div class="form-group">
+                            <label class="form-label">Adicione uma mensagem especial</label>
+                            <textarea class="form-textarea" id="mensagem" placeholder="Ex: Sua presença é o melhor presente!" oninput="updatePreview()"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Contact & Terms -->
+                <div class="step-content" id="step4">
+                    <div class="form-section">
+                        <h3 class="section-title">Dados de Contato</h3>
+                        <div class="form-group">
+                            <label class="form-label">Nome para Contato</label>
+                            <input type="text" class="form-input" id="nomeContato" placeholder="Ex: Maria Silva" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telefone</label>
+                            <input type="tel" class="form-input" id="telefone" placeholder="Ex: (11) 99999-9999" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">E-mail</label>
+                            <input type="email" class="form-input" id="email" placeholder="Ex: contato@email.com" oninput="updatePreview()">
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Termos e Condições</h3>
+                        <div class="terms-box">
+                            <p><strong>Termos de Uso - Festivite</strong></p>
+                            <p>Ao utilizar o Festivite para criar seu convite digital, você concorda com os seguintes termos:</p>
+                            <ul>
+                                <li>O conteúdo inserido é de sua responsabilidade</li>
+                                <li>As imagens enviadas devem ser de sua propriedade ou ter direitos de uso</li>
+                                <li>O convite gerado pode ser compartilhado livremente</li>
+                                <li>Não nos responsabilizamos pelo uso indevido dos convites</li>
+                                <li>Seus dados de contato serão exibidos no convite conforme preenchido</li>
+                            </ul>
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="aceitaTermos" onchange="updateTermsButton()">
+                            <span class="checkbox-custom">
+                                <svg width="16" height="16" fill="none" stroke="white" viewBox="0 0 24 24" style="display: none;" id="checkIcon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </span>
+                            <span class="checkbox-text">Li e aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 5: Final -->
+                <div class="step-content" id="step5">
+                    <div class="final-step-header">
+                        <h2>🎉 Seu Convite Está Pronto!</h2>
+                        <p>Confira a prévia e faça ajustes se necessário</p>
+                    </div>
+                    
+                    <div id="finalPreview"></div>
+
+                    <div class="final-buttons">
+                        <button class="btn btn-success" onclick="downloadInvite()">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                            Baixar Convite
+                        </button>
+                        <button class="btn btn-secondary" onclick="shareInvite()">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                            </svg>
+                            Compartilhar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="nav-buttons" id="navButtons">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="prevStep()" style="display: none;">Voltar</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">Próximo</button>
+                </div>
+            </div>
+
+            <!-- Preview Side (Desktop) -->
+            <div class="preview-container">
+                <div class="preview-sticky">
+                    <h3 class="preview-title">Prévia em Tempo Real</h3>
+                    <div id="desktopPreview"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Preview -->
+        <div class="mobile-preview" id="mobilePreview">
+            <h2>Prévia do Convite</h2>
+            <div id="mobilePreviewContent"></div>
+            <button class="btn btn-primary back-to-edit-btn" onclick="togglePreview()">Voltar para Edição</button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Feito com 💛 por Festivite • Crie convites digitais incríveis</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const themes = {
+            casamento: { name: 'Casamento', emoji: '💒', colors: ['#F8E8E0', '#D4A574', '#8B7355'], accent: '#C9A86C' },
+            aniversario: { name: 'Aniversário', emoji: '🎂', colors: ['#FFE5EC', '#FF69B4', '#FF1493'], accent: '#FF85A2' },
+            formatura: { name: 'Formatura', emoji: '🎓', colors: ['#1A1A2E', '#16213E', '#0F3460'], accent: '#E94560' },
+            corporativo: { name: 'Corporativo', emoji: '💼', colors: ['#2C3E50', '#34495E', '#1ABC9C'], accent: '#16A085' },
+            chaDeBarbie: { name: 'Chá de Bebê', emoji: '👶', colors: ['#E8F4FD', '#B8D4E3', '#7FB3D5'], accent: '#5DADE2' },
+            festa: { name: 'Festa', emoji: '🎉', colors: ['#2D1B69', '#7B2CBF', '#E040FB'], accent: '#FF6D00' }
+        };
+
+        const fonts = [
+            { name: 'Elegante', value: "'Playfair Display', serif" },
+            { name: 'Moderno', value: "'Poppins', sans-serif" },
+            { name: 'Clássico', value: "'Cormorant Garamond', serif" },
+            { name: 'Divertido', value: "'Pacifico', cursive" },
+            { name: 'Minimalista', value: "'Montserrat', sans-serif" }
+        ];
+
+        const stepTitles = [
+            { title: 'Detalhes do Evento', desc: 'Preencha as informações básicas do seu evento' },
+            { title: 'Aparência', desc: 'Escolha o tema, cores e fonte do convite' },
+            { title: 'Mídia e Mensagem', desc: 'Adicione uma imagem e mensagem especial' },
+            { title: 'Contato e Termos', desc: 'Informe seus dados de contato e aceite os termos' },
+            { title: 'Finalização', desc: 'Revise e baixe seu convite' }
+        ];
+
+        // State
+        let currentStep = 1;
+        let selectedTheme = 'casamento';
+        let selectedFont = "'Playfair Display', serif";
+        let uploadedImage = null;
+        let previewMode = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderThemes();
+            renderFonts();
+            updatePreview();
+        });
+
+        function renderThemes() {
+            const grid = document.getElementById('themeGrid');
+            grid.innerHTML = '';
+            
+            Object.entries(themes).forEach(([key, theme]) => {
+                const card = document.createElement('div');
+                card.className = `theme-card ${key === selectedTheme ? 'selected' : ''}`;
+                card.style.background = `linear-gradient(135deg, ${theme.colors[0]} 0%, ${theme.colors[1]} 100%)`;
+                card.onclick = () => selectTheme(key);
+                card.innerHTML = `
+                    <div class="theme-emoji">${theme.emoji}</div>
+                    <div class="theme-name" style="color: ${theme.colors[2] || '#333'}">${theme.name}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderFonts() {
+            const list = document.getElementById('fontList');
+            list.innerHTML = '';
+            
+            fonts.forEach(font => {
+                const card = document.createElement('div');
+                card.className = `font-card ${font.value === selectedFont ? 'selected' : ''}`;
+                card.onclick = () => selectFont(font.value);
+                card.innerHTML = `
+                    <div class="font-card-title" style="font-family: ${font.value}">${font.name}</div>
+                    <div class="font-card-preview" style="font-family: ${font.value}">Exemplo de texto para o convite</div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function selectTheme(key) {
+            selectedTheme = key;
+            const theme = themes[key];
+            document.getElementById('corPrincipal').value = theme.colors[0];
+            document.getElementById('corSecundaria').value = theme.colors[1];
+            renderThemes();
+            updatePreview();
+        }
+
+        function selectFont(value) {
+            selectedFont = value;
+            renderFonts();
+            updatePreview();
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage = e.target.result;
+                    const uploadDiv = document.getElementById('imageUpload');
+                    uploadDiv.innerHTML = `
+                        <div class="image-preview-container">
+                            <img src="${uploadedImage}" class="image-preview" alt="Preview">
+                            <button class="image-remove-btn" onclick="removeImage(event)">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    updatePreview();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeImage(event) {
+            event.stopPropagation();
+            uploadedImage = null;
+            document.getElementById('imageInput').value = '';
+            document.getElementById('imageUpload').innerHTML = `
+                <svg class="image-upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <p class="image-upload-text">Clique para adicionar uma imagem</p>
+                <p class="image-upload-hint">PNG, JPG ou GIF</p>
+            `;
+            updatePreview();
+        }
+
+        function updateTermsButton() {
+            const checkbox = document.getElementById('aceitaTermos');
+            const checkIcon = document.getElementById('checkIcon');
+            checkIcon.style.display = checkbox.checked ? 'block' : 'none';
+            
+            if (currentStep === 4) {
+                document.getElementById('nextBtn').disabled = !checkbox.checked;
+            }
+        }
+
+        function generateInviteHTML() {
+            const theme = themes[selectedTheme];
+            const corPrincipal = document.getElementById('corPrincipal').value;
+            const corSecundaria = document.getElementById('corSecundaria').value;
+            const corTexto = document.getElementById('corTexto').value;
+            
+            const titulo = document.getElementById('titulo').value || 'Título do Evento';
+            const subtitulo = document.getElementById('subtitulo').value;
+            const data = document.getElementById('data').value;
+            const hora = document.getElementById('hora').value;
+            const local = document.getElementById('local').value || 'Local do Evento';
+            const endereco = document.getElementById('endereco').value;
+            const descricao = document.getElementById('descricao').value;
+            const mensagem = document.getElementById('mensagem').value;
+            const nomeContato = document.getElementById('nomeContato').value;
+            const telefone = document.getElementById('telefone').value;
+            const email = document.getElementById('email').value;
+
+            let dataFormatada = 'Data do Evento';
+            if (data) {
+                const dateObj = new Date(data + 'T00:00:00');
+                dataFormatada = dateObj.toLocaleDateString('pt-BR', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+
+            return `
+                <div class="invite-preview" style="background: linear-gradient(135deg, ${corPrincipal} 0%, ${corSecundaria} 100%);">
+                    <div class="invite-content">
+                        <div class="invite-header-decoration">
+                            <div class="invite-line" style="background-color: ${theme.accent}"></div>
+                            <span class="invite-emoji">${theme.emoji}</span>
+                            <div class="invite-line" style="background-color: ${theme.accent}"></div>
+                        </div>
+
+                        ${uploadedImage ? `
+                            <div class="invite-image" style="border-color: ${theme.accent}">
+                                <img src="${uploadedImage}" alt="Convite">
+                            </div>
+                        ` : ''}
+
+                        <h1 class="invite-title" style="font-family: ${selectedFont}; color: ${corTexto}">${titulo}</h1>
+                        
+                        ${subtitulo ? `<p class="invite-subtitle" style="font-family: ${selectedFont}; color: ${corTexto}">${subtitulo}</p>` : ''}
+
+                        <div class="invite-divider" style="background-color: ${theme.accent}"></div>
+
+                        <div class="invite-info">
+                            <svg fill="none" stroke="${theme.accent}" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span style="font-family: ${selectedFont}; color: ${corTexto}">${dataFormatada}</span>
+                        </div>
+
+                        ${hora ? `
+                            <div class="invite-info">
+                                <svg fill="none" stroke="${theme.accent}" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span style="font-family: ${selectedFont}; color: ${corTexto}">${hora}</span>
+                            </div>
+                        ` : ''}
+
+                        <div class="invite-location" style="margin-top: 1rem;">
+                            <svg fill="none" stroke="${theme.accent}" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <div>
+                                <p class="invite-location-name" style="font-family: ${selectedFont}; color: ${corTexto}">${local}</p>
+                                ${endereco ? `<p class="invite-location-address" style="color: ${corTexto}">${endereco}</p>` : ''}
+                            </div>
+                        </div>
+
+                        ${descricao ? `
+                            <div class="invite-description" style="font-family: ${selectedFont}; color: ${corTexto}">
+                                ${descricao}
+                            </div>
+                        ` : ''}
+
+                        ${mensagem ? `
+                            <p class="invite-message" style="font-family: ${selectedFont}; color: ${corTexto}">
+                                "${mensagem}"
+                            </p>
+                        ` : ''}
+
+                        ${(nomeContato || telefone || email) ? `
+                            <div class="invite-contact" style="border-color: ${corTexto}20">
+                                <p class="invite-contact-label" style="color: ${corTexto}">Contato</p>
+                                ${nomeContato ? `<p class="invite-contact-name" style="color: ${corTexto}">${nomeContato}</p>` : ''}
+                                <div class="invite-contact-info" style="color: ${corTexto}">
+                                    ${telefone ? `<span>${telefone}</span>` : ''}
+                                    ${email ? `<span>${email}</span>` : ''}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <div class="invite-footer">
+                            <div class="invite-footer-line" style="background-color: ${corTexto}"></div>
+                            <span class="invite-footer-text" style="color: ${corTexto}">Festivite</span>
+                            <div class="invite-footer-line" style="background-color: ${corTexto}"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updatePreview() {
+            const html = generateInviteHTML();
+            document.getElementById('desktopPreview').innerHTML = html;
+            document.getElementById('mobilePreviewContent').innerHTML = html;
+            
+            if (currentStep === 5) {
+                document.getElementById('finalPreview').innerHTML = html;
+            }
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            updateStepUI();
+            updatePreview();
+        }
+
+        function nextStep() {
+            if (currentStep < 5) {
+                currentStep++;
+                updateStepUI();
+                updatePreview();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepUI();
+                updatePreview();
+            }
+        }
+
+        function updateStepUI() {
+            // Update step dots
+            for (let i = 1; i <= 5; i++) {
+                const dot = document.getElementById(`stepDot${i}`);
+                const line = document.getElementById(`stepLine${i}`);
+                
+                dot.classList.remove('active', 'completed', 'inactive');
+                if (i === currentStep) {
+                    dot.classList.add('active');
+                    dot.textContent = i;
+                } else if (i < currentStep) {
+                    dot.classList.add('completed');
+                    dot.textContent = '✓';
+                } else {
+                    dot.classList.add('inactive');
+                    dot.textContent = i;
+                }
+
+                if (line) {
+                    line.classList.toggle('completed', i < currentStep);
+                }
+            }
+
+            // Update step content
+            for (let i = 1; i <= 5; i++) {
+                const content = document.getElementById(`step${i}`);
+                content.classList.toggle('active', i === currentStep);
+            }
+
+            // Update title and description
+            document.getElementById('stepTitle').textContent = stepTitles[currentStep - 1].title;
+            document.getElementById('stepDescription').textContent = stepTitles[currentStep - 1].desc;
+
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const navButtons = document.getElementById('navButtons');
+
+            prevBtn.style.display = currentStep > 1 ? 'flex' : 'none';
+            
+            if (currentStep === 5) {
+                navButtons.style.display = 'none';
+            } else {
+                navButtons.style.display = 'flex';
+                nextBtn.textContent = currentStep === 4 ? 'Gerar Convite' : 'Próximo';
+                nextBtn.disabled = currentStep === 4 && !document.getElementById('aceitaTermos').checked;
+            }
+
+            // Update final preview
+            if (currentStep === 5) {
+                document.getElementById('finalPreview').innerHTML = generateInviteHTML();
+            }
+        }
+
+        function togglePreview() {
+            previewMode = !previewMode;
+            const mainContent = document.getElementById('mainContent');
+            const btnText = document.getElementById('previewBtnText');
+            
+            mainContent.classList.toggle('mobile-preview-mode', previewMode);
+            btnText.textContent = previewMode ? 'Editar' : 'Prévia';
+            
+            if (previewMode) {
+                document.getElementById('mobilePreviewContent').innerHTML = generateInviteHTML();
+            }
+        }
+
+        function downloadInvite() {
+            const inviteHTML = generateInviteHTML();
+            const fullHTML = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${document.getElementById('titulo').value || 'Convite'}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;600&family=Cormorant+Garamond:wght@400;600&family=Pacifico&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f5f5f5; padding: 20px; }
+        .invite-preview { width: 100%; max-width: 400px; border-radius: 1rem; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); min-height: 600px; position: relative; }
+        .invite-content { position: relative; z-index: 10; padding: 2rem; display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 600px; }
+        .invite-header-decoration { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+        .invite-line { width: 48px; height: 1px; }
+        .invite-emoji { font-size: 1.75rem; }
+        .invite-image { width: 128px; height: 128px; border-radius: 50%; overflow: hidden; margin-bottom: 1.5rem; border-width: 4px; border-style: solid; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
+        .invite-image img { width: 100%; height: 100%; object-fit: cover; }
+        .invite-title { font-size: 1.75rem; font-weight: bold; margin-bottom: 0.5rem; line-height: 1.2; }
+        .invite-subtitle { font-size: 1rem; opacity: 0.8; margin-bottom: 1.5rem; }
+        .invite-divider { width: 96px; height: 4px; border-radius: 2px; margin-bottom: 1.5rem; }
+        .invite-info { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .invite-info svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .invite-location { display: flex; align-items: flex-start; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; text-align: left; }
+        .invite-location svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+        .invite-location-name { font-weight: 600; }
+        .invite-location-address { font-size: 0.875rem; opacity: 0.75; }
+        .invite-description { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; line-height: 1.5; }
+        .invite-message { font-style: italic; font-size: 0.875rem; opacity: 0.9; margin-bottom: 1.5rem; }
+        .invite-contact { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.2); width: 100%; }
+        .invite-contact-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-bottom: 0.5rem; }
+        .invite-contact-name { font-size: 0.875rem; font-weight: 600; }
+        .invite-contact-info { display: flex; justify-content: center; gap: 1rem; margin-top: 0.5rem; font-size: 0.875rem; }
+        .invite-footer { margin-top: 1.5rem; display: flex; align-items: center; gap: 0.5rem; opacity: 0.5; }
+        .invite-footer-line { width: 32px; height: 1px; }
+        .invite-footer-text { font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+    ${inviteHTML}
+</body>
+</html>`;
+
+            const blob = new Blob([fullHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'convite.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function shareInvite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.getElementById('titulo').value || 'Convite',
+                    text: `Você está convidado para ${document.getElementById('titulo').value || 'um evento especial'}!`,
+                    url: window.location.href
+                });
+            } else {
+                alert('Compartilhamento não suportado neste navegador. Você pode baixar o convite e compartilhar manualmente.');
+            }
+        }
+    </script>
+</body>
+</html>
